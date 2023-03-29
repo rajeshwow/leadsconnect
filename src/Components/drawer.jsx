@@ -27,15 +27,15 @@ const Drawer = (props) => {
                 </Col>
                 <Col lg={8}>
                   <span>{val.title} </span>
-                  <div class="input-group input-group-sm mb-3">
+                  <div class="input-group input-group-sm mb-3  " width={"40%"} >
                     <button
-                      class="btn btn-outline-secondary"
+                      class="btn btn-outline-secondary" 
                       type="button"
                       id="inputGroupFileAddon03"
                     >
                       -
                     </button>
-                    <input type="text" class="form-control" width={"40%"} />
+                    <input type="text" class="form-control" value={val.quantity}  />
                     <button
                       class="btn btn-outline-secondary"
                       type="button"
