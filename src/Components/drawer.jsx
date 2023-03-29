@@ -11,8 +11,8 @@ const Drawer = (props) => {
   useEffect(() => {
     props.showDrawer && setshow(true);
   }, [props]);
+console.log("dd")
 
-  
   return (
     <Offcanvas show={show} onHide={handleClose}>
       <Offcanvas.Header closeButton>
