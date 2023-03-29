@@ -1,24 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
+import Navbars from "./Components/navbar";
+import ProductList from "./Components/productList";
+import Drawer from "./Components/drawer";
 
 function App() {
+  const [productData, setproductData] = useState([]);
+  const [showDrawers, setshowDrawers] = useState(false)
+  const [cartItems, setcartItems] = useState([])
+
+  useEffect(() => {
+    axios.get("https://fakestoreapi.com/products").then((response) => {
+      setproductData(response.data);
+    });
+  }, []);
+
+  const onClickCartOpen = ()=>{
+    setshowDrawers(true)
+  }
+  const onclickCartClose = ()=>{
+    setshowDrawers(false)
+  }
+
+  const addToCart = (values)=>{
+    // alert(values)
+    setcartItems([...cartItems,values])
+  }
+  console.log("vvvvvvvvv",cartItems)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Navbars onClickCart={onClickCartOpen} />
+      <ProductList addToCart={addToCart}  items={productData}/>
+      <Drawer cartItems={cartItems} onclickCartClose={onclickCartClose} showDrawer={showDrawers} />
+    </>
   );
 }
 

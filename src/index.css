@@ -11,3 +11,25 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.imgDiv{
+  height: 200px;
+}
+.cardImage{
+  max-height: 180px;
+}
+.card{
+  width: 15rem;
+  height: 15rem;
+}
+h2.card-title{
+  font-size: 14px;
+  text-align: center;
+  font-weight: 600;
+  color: #616161;
+}
+.card-product-rating{
+  float:left;
+  color:#111;
+  font-size: 12px;
+}
