@@ -11,6 +11,8 @@ function App() {
   const [productData, setproductData] = useState([]);
   const [showDrawers, setshowDrawers] = useState(false);
   const [cartItems, setcartItems] = useState([]);
+  const [clickedQty, setclickedQty] = useState(1);
+  const [clickedInputId, setclickedInputId] = useState(null);
 
   useEffect(() => {
     axios.get("https://fakestoreapi.com/products").then((response) => {
@@ -25,26 +27,22 @@ function App() {
     setshowDrawers(false);
   };
 
-  const addToCart = (values) => {
-    console.log(
-      "cartItems?.some((el) => el.id === values.id)",
-      cartItems?.some((el) => el.id === values.id)
-    );
+  const onChangeQty = (event, value) => {
+    console.log("vvvvvvvvv", event.target.value, value);
+    setclickedQty(event.target.value);
+    setclickedInputId(value);
+  };
+
+  const addToCart = (values, id) => {
+    console.log("xxx", values, id);
     if (!cartItems?.some((el) => el.id === values.id)) {
-      const newVals = { ...values, quantity: 1 };
+      const newVals = { ...values, quantity: clickedQty };
       setcartItems([...cartItems, newVals]);
     } else {
-      const newArr = [...cartItems]?.filter((val) => val.id !== values.id);
-
-      const newVals = [...cartItems]
-        ?.filter((val) => val.id === values.id)
-        ?.map((val) => {
-          return { ...val, quantity: val.quantity + 1 };
-        });
 
         const newArray = cartItems.map((item, i) => {
           if (item.id === values.id) {
-            return { ...item, quantity: item.quantity+1 };
+            return { ...item, quantity: parseInt(item.quantity) + parseInt(clickedQty) };
           } else {
             return item;
           }
@@ -52,17 +50,48 @@ function App() {
 
       setcartItems(newArray);
     }
+
+    // setcartItems(newArray);
   };
+
+  const plusItem = (value,id)=>{
+    const newArray = cartItems.map((item, i) => {
+      if (item.id === id) {
+        return { ...item, quantity: parseInt(item.quantity) + 1 };
+      } else {
+        return item;
+      }
+    });
+    setcartItems(newArray)
+  }
+
+  const minusItem = (value,id)=>{
+    const newArray = cartItems.map((item, i) => {
+      if (item.id === id) {
+        return { ...item, quantity: parseInt(item.quantity) - 1 };
+      } else {
+        return item;
+      }
+    });
+    setcartItems(newArray)
+  }
+
   console.log("xxxxxxxxxx", cartItems);
 
   return (
     <>
-      <Navbars onClickCart={onClickCartOpen} />
-      <ProductList addToCart={addToCart} items={productData} />
+      <Navbars cartItems={cartItems} onClickCart={onClickCartOpen} />
+      <ProductList
+        onChangeQty={onChangeQty}
+        addToCart={addToCart}
+        items={productData}
+      />
       <Drawer
         cartItems={cartItems}
         onclickCartClose={onclickCartClose}
         showDrawer={showDrawers}
+        plusItem={plusItem}
+        minusItem={minusItem}
       />
     </>
   );
